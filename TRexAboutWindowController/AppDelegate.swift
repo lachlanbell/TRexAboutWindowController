@@ -14,7 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var aboutWindowController:TRexAboutWindowController
     
     override init() {
-        self.aboutWindowController = TRexAboutWindowController(windowNibName: "PFAboutWindow")
+        self.aboutWindowController = TRexAboutWindowController(windowNibName: NSNib.Name(rawValue: "PFAboutWindow"))
         super.init()
     }
     
@@ -31,9 +31,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.aboutWindowController.appName = "TRex-Editor"
         let font = NSFont(name: "HelveticaNeue", size: 11.0) ?? NSFont.systemFont(ofSize: 11.0)
         let color = NSColor.tertiaryLabelColor
-        let attribs:[String:AnyObject] = [NSForegroundColorAttributeName:color,
-            NSFontAttributeName:font]
-        
+        let attribs:[NSAttributedStringKey: Any] = [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue):color,
+                                                    NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue):font]
         
         self.aboutWindowController.appCopyright = NSAttributedString(string: "Copyright (c) 2015 David Ehlen", attributes: attribs)
         

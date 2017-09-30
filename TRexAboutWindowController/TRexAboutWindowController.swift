@@ -14,7 +14,7 @@ public enum WindowState {
 }
 
 open class TRexAboutWindowController : NSWindowController {
-    open var appName = ""
+    @objc open var appName = ""
     open var appVersion = ""
     open var appCopyright = NSAttributedString()
     open var appCredits = NSAttributedString()
@@ -56,9 +56,8 @@ open class TRexAboutWindowController : NSWindowController {
         
         if self.appCopyright.string.isEmpty {
             let font = NSFont(name: "HelveticaNeue", size: 11.0) ?? NSFont.systemFont(ofSize: 11.0)
-            let color = floor(NSAppKitVersionNumber) <= Double(NSAppKitVersionNumber10_9) ? NSColor.lightGray : NSColor.tertiaryLabelColor
-            let attribs:[String:AnyObject] = [NSForegroundColorAttributeName:color,
-                                              NSFontAttributeName:font]
+            let color = floor(Double(UInt8((NSAppKitVersion.current).rawValue))) <= Double(UInt8((NSAppKitVersion.macOS10_9).rawValue)) ? NSColor.lightGray : NSColor.tertiaryLabelColor
+            let attribs:[NSAttributedStringKey: Any] = [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue):color, NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue):font]
             self.appCopyright = NSAttributedString(string: valueFromInfoDict("NSHumanReadableCopyright") ?? "", attributes:attribs)
         }
         
@@ -115,7 +114,7 @@ open class TRexAboutWindowController : NSWindowController {
         self.windowState = windowState == .Collapsed ? .Expanded : .Collapsed
     }
     
-    open func windowShouldClose(_ sender: AnyObject) -> Bool {
+    @objc open func windowShouldClose(_ sender: AnyObject) -> Bool {
         self.showCopyright(sender)
         return true
     }
@@ -127,7 +126,7 @@ open class TRexAboutWindowController : NSWindowController {
     //Button Actions
     @IBAction func visitWebsite(_ sender: AnyObject) {
         guard let url = self.appURL else { return }
-        NSWorkspace.shared().open(url)
+        NSWorkspace.shared.open(url)
     }
     
     @IBAction func showCredits(_ sender: AnyObject) {
